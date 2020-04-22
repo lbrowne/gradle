@@ -69,12 +69,12 @@ include::sample[dir="snippets/userguide/initScripts/configurationInjection/kotli
 [source.multi-language-sample,groovy]
 ----
 > gradle --init-script init.gradle -q showRepos
-include::{samplesPath}/userguide/initScripts/configurationInjection/initScriptConfiguration.out[]
+include::{snippetsPath}/userguide/initScripts/configurationInjection/initScriptConfiguration.out[]
 ----
 [source.multi-language-sample,kotlin]
 ----
 > gradle --init-script init.gradle.kts -q showRepos
-include::{samplesPath}/userguide/initScripts/configurationInjection/initScriptConfiguration.out[]
+include::{snippetsPath}/userguide/initScripts/configurationInjection/initScriptConfiguration.out[]
 ----
 
 [[sec:custom_classpath]]
@@ -106,12 +106,12 @@ Output when applying the init script
 [source.multi-language-sample,groovy]
 ----
 > gradle --init-script init.gradle -q doNothing
-include::{samplesPath}/userguide/initScripts/externalDependency/externalInitDependency.out[]
+include::{snippetsPath}/userguide/initScripts/externalDependency/externalInitDependency.out[]
 ----
 [source.multi-language-sample,kotlin]
 ----
 > gradle --init-script init.gradle.kts -q doNothing
-include::{samplesPath}/userguide/initScripts/externalDependency/externalInitDependency.out[]
+include::{snippetsPath}/userguide/initScripts/externalDependency/externalInitDependency.out[]
 ----
 
 [[sec:init_script_plugins]]
@@ -130,12 +130,12 @@ Output when applying the init script
 [source.multi-language-sample,groovy]
 ----
 > gradle --init-script init.gradle -q showRepositories
-include::{samplesPath}/userguide/initScripts/plugins/usePluginsInInitScripts.out[]
+include::{snippetsPath}/userguide/initScripts/plugins/usePluginsInInitScripts.out[]
 ----
 [source.multi-language-sample,kotlin]
 ----
 > gradle --init-script init.gradle.kts -q showRepositories
-include::{samplesPath}/userguide/initScripts/plugins/usePluginsInInitScripts.out[]
+include::{snippetsPath}/userguide/initScripts/plugins/usePluginsInInitScripts.out[]
 ----
 
 The plugin in the init script ensures that only a specified repository is used when running the build.

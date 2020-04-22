@@ -39,7 +39,7 @@ include::sample[dir="snippets/userguide/tutorial/projectApi/kotlin",files="build
 .Output of **`gradle -q check`**
 ----
 > gradle -q check
-include::{samplesPath}/userguide/tutorial/projectApi/projectApi.out[]
+include::{snippetsPath}/userguide/tutorial/projectApi/projectApi.out[]
 ----
 ====
 
@@ -145,7 +145,7 @@ include::sample[dir="snippets/userguide/tutorial/extraProperties/kotlin",files="
 .Output of **`gradle -q printProperties`**
 ----
 > gradle -q printProperties
-include::{samplesPath}/userguide/tutorial/extraProperties/extraProperties.out[]
+include::{snippetsPath}/userguide/tutorial/extraProperties/extraProperties.out[]
 ----
 ====
 
@@ -172,7 +172,7 @@ include::sample[dir="snippets/userguide/tutorial/configureObject/kotlin",files="
 .Output of **`gradle -q configure`**
 ----
 > gradle -q configure
-include::{samplesPath}/userguide/tutorial/configureObject/configureObject.out[]
+include::{snippetsPath}/userguide/tutorial/configureObject/configureObject.out[]
 ----
 ====
 
@@ -195,7 +195,7 @@ include::sample[dir="snippets/userguide/tutorial/configureObjectUsingScript/groo
 .Output of `gradle -q configure`
 ----
 > gradle -q configure
-include::{samplesPath}/userguide/tutorial/configureObjectUsingScript/configureObjectUsingScript.out[]
+include::{snippetsPath}/userguide/tutorial/configureObjectUsingScript/configureObjectUsingScript.out[]
 ----
 ====
 

@@ -49,12 +49,12 @@ include::sample[dir="snippets/userguide/buildlifecycle/basic/kotlin",files="sett
 [source.multi-language-sample,groovy]
 ----
 > gradle test testBoth
-include::{samplesPath}/userguide/buildlifecycle/basic/buildlifecycle.groovy.out[]
+include::{snippetsPath}/userguide/buildlifecycle/basic/buildlifecycle.groovy.out[]
 ----
 [source.multi-language-sample,kotlin]
 ----
 > gradle test testBoth
-include::{samplesPath}/userguide/buildlifecycle/basic/buildlifecycle.kotlin.out[]
+include::{snippetsPath}/userguide/buildlifecycle/basic/buildlifecycle.kotlin.out[]
 ----
 
 For a build script, the property access and method calls are delegated to a project object. Similarly property access and method calls within the settings file is delegated to a settings object. Look at the link:{groovyDslPath}/org.gradle.api.initialization.Settings.html[Settings] class in the API documentation for more information.
@@ -168,7 +168,7 @@ include::sample[dir="snippets/userguide/buildlifecycle/projectEvaluateEvents/kot
 .Output of `gradle -q test`
 ----
 > gradle -q test
-include::{samplesPath}/userguide/buildlifecycle/projectEvaluateEvents/projectEvaluateEvents.out[]
+include::{snippetsPath}/userguide/buildlifecycle/projectEvaluateEvents/projectEvaluateEvents.out[]
 ----
 
 This example uses method `Project.afterEvaluate()` to add a closure which is executed after the project is evaluated.
@@ -185,12 +185,12 @@ include::sample[dir="snippets/userguide/buildlifecycle/buildProjectEvaluateEvent
 [source.multi-language-sample,groovy]
 ----
 > gradle -q test
-include::{samplesPath}/userguide/buildlifecycle/buildProjectEvaluateEvents/buildProjectEvaluateEvents.groovy.out[]
+include::{snippetsPath}/userguide/buildlifecycle/buildProjectEvaluateEvents/buildProjectEvaluateEvents.groovy.out[]
 ----
 [source.multi-language-sample,kotlin]
 ----
 > gradle -q test
-include::{samplesPath}/userguide/buildlifecycle/buildProjectEvaluateEvents/buildProjectEvaluateEvents.kotlin.out[]
+include::{snippetsPath}/userguide/buildlifecycle/buildProjectEvaluateEvents/buildProjectEvaluateEvents.kotlin.out[]
 ----
 
 You can also add a link:{javadocPath}/org/gradle/api/ProjectEvaluationListener.html[ProjectEvaluationListener] to the link:{groovyDslPath}/org.gradle.api.invocation.Gradle.html[Gradle] to receive these events.
@@ -211,7 +211,7 @@ include::sample[dir="snippets/userguide/buildlifecycle/taskCreationEvents/kotlin
 .Output of **`gradle -q a`**
 ----
 > gradle -q a
-include::{samplesPath}/userguide/buildlifecycle/taskCreationEvents/taskCreationEvents.out[]
+include::{snippetsPath}/userguide/buildlifecycle/taskCreationEvents/taskCreationEvents.out[]
 ----
 
 You can also add an link:{javadocPath}/org/gradle/api/Action.html[Action] to a link:{javadocPath}/org/gradle/api/tasks/TaskContainer.html[TaskContainer] to receive these events.
@@ -240,12 +240,12 @@ include::sample[dir="snippets/userguide/buildlifecycle/taskExecutionEvents/kotli
 [source.multi-language-sample,groovy]
 ----
 > gradle -q broken
-include::{samplesPath}/userguide/buildlifecycle/taskExecutionEvents/taskExecutionEvents.groovy.out[]
+include::{snippetsPath}/userguide/buildlifecycle/taskExecutionEvents/taskExecutionEvents.groovy.out[]
 ----
 [source.multi-language-sample,kotlin]
 ----
 > gradle -q broken
-include::{samplesPath}/userguide/buildlifecycle/taskExecutionEvents/taskExecutionEvents.kotlin.out[]
+include::{snippetsPath}/userguide/buildlifecycle/taskExecutionEvents/taskExecutionEvents.kotlin.out[]
 ----
 
 You can also use a link:{javadocPath}/org/gradle/api/execution/TaskExecutionListener.html[TaskExecutionListener] to the link:{javadocPath}/org/gradle/api/execution/TaskExecutionGraph.html[TaskExecutionGraph] to receive these events.

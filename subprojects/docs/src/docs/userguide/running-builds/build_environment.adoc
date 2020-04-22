@@ -86,7 +86,7 @@ include::sample[dir="snippets/userguide/tutorial/properties/kotlin",files="build
 
 ----
 $ gradle -q -PcommandLineProjectProp=commandLineProjectPropValue -Dorg.gradle.project.systemProjectProp=systemPropertyValue printProps
-include::{samplesPath}/userguide/tutorial/properties/properties.out[]
+include::{snippetsPath}/userguide/tutorial/properties/properties.out[]
 ----
 
 [[sec:gradle_system_properties]]
@@ -216,7 +216,7 @@ include::sample[dir="snippets/userguide/tutorial/configureTaskUsingProjectProper
 
 ----
 $ gradle performRelease -PisCI=true --quiet
-include::{samplesPath}/userguide/tutorial/configureTaskUsingProjectProperty/configureTaskUsingProjectProperty.out[]
+include::{snippetsPath}/userguide/tutorial/configureTaskUsingProjectProperty/configureTaskUsingProjectProperty.out[]
 ----
 
 [[sec:accessing_the_web_via_a_proxy]]

@@ -234,7 +234,7 @@ include::sample[dir="snippets/userguide/artifacts/generatedFileDependencies/kotl
 
 ----
 $ gradle -q list
-include::{samplesPath}/userguide/artifacts/generatedFileDependencies/generatedFileDependencies.out[]
+include::{snippetsPath}/userguide/artifacts/generatedFileDependencies/generatedFileDependencies.out[]
 ----
 
 [[sec:versioning_file_dependencies]]
@@ -341,7 +341,7 @@ include::sample[dir="snippets/userguide/dependencyManagement/inspectingDependenc
 .Output of **`gradle -q dependencyInsight --dependency asm`**
 ----
 > gradle -q dependencyInsight --dependency asm
-include::{samplesPath}/userguide/dependencyManagement/inspectingDependencies/dependencyReason/dependencyReasonReport.out[]
+include::{snippetsPath}/userguide/dependencyManagement/inspectingDependencies/dependencyReason/dependencyReasonReport.out[]
 ----
 
 [[sec:resolve_specific_artifacts_from_dependency]]

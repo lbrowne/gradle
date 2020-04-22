@@ -110,12 +110,12 @@ include::sample[dir="snippets/userguide/initScripts/customLogger/kotlin",files="
 [.multi-language-text.lang-groovy]
 ----
 $ gradle -I init.gradle build
-include::{samplesPath}/userguide/initScripts/customLogger/customLogger.out[]
+include::{snippetsPath}/userguide/initScripts/customLogger/customLogger.out[]
 ----
 [.multi-language-text.lang-kotlin]
 ----
 $ gradle -I customLogger.init.gradle.kts build
-include::{samplesPath}/userguide/initScripts/customLogger/customLogger.out[]
+include::{snippetsPath}/userguide/initScripts/customLogger/customLogger.out[]
 ----
 ```
 
