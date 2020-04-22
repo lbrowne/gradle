@@ -31,8 +31,8 @@ class SamplesDependencySubstitutionIntegrationTest extends AbstractIntegrationSp
 
     @Unroll
     @UsesSample("userguide/dependencyManagement/customizingResolution/conditionalSubstitutionRule")
-    @ToBeFixedForInstantExecution(iterationMatchers = ".*kotlin dsl")
-    def "can run sample with all external dependencies with #dsl dsl" () {
+    @ToBeFixedForInstantExecution
+    def "can run sample with all external dependencies with #dsl dsl"() {
         executer.inDirectory(sample.dir.file(dsl))
 
         when:
@@ -47,13 +47,13 @@ class SamplesDependencySubstitutionIntegrationTest extends AbstractIntegrationSp
         TextUtil.normaliseFileSeparators(output).contains("repo/org.example/project3/1.0/project3-1.0.jar")
 
         where:
-        dsl <<  ['groovy', 'kotlin']
+        dsl << ['groovy', 'kotlin']
     }
 
     @Unroll
     @UsesSample("userguide/dependencyManagement/customizingResolution/conditionalSubstitutionRule")
-    @ToBeFixedForInstantExecution(iterationMatchers = ".*kotlin dsl")
-    def "can run sample with some internal projects with #dsl dsl" () {
+    @ToBeFixedForInstantExecution
+    def "can run sample with some internal projects with #dsl dsl"() {
         executer.inDirectory(sample.dir.file(dsl))
 
         when:
@@ -69,6 +69,6 @@ class SamplesDependencySubstitutionIntegrationTest extends AbstractIntegrationSp
         TextUtil.normaliseFileSeparators(output).contains("repo/org.example/project3/1.0/project3-1.0.jar")
 
         where:
-        dsl <<  ['groovy', 'kotlin']
+        dsl << ['groovy', 'kotlin']
     }
 }
