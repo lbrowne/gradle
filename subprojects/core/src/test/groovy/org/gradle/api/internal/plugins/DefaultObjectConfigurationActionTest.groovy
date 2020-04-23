@@ -20,7 +20,7 @@ import org.gradle.api.internal.initialization.ClassLoaderScope
 import org.gradle.api.internal.initialization.ScriptHandlerFactory
 import org.gradle.api.internal.initialization.ScriptHandlerInternal
 import org.gradle.configuration.ScriptPlugin
-import org.gradle.configuration.ScriptPluginFactory
+import org.gradle.internal.scripts.ScriptPluginFactory
 import org.gradle.internal.resource.TextUriResourceLoader
 import org.junit.Test
 import spock.lang.Specification

@@ -20,7 +20,7 @@ import org.gradle.api.initialization.dsl.ScriptHandler
 import org.gradle.api.internal.initialization.ClassLoaderScope
 
 import org.gradle.configuration.ScriptPlugin
-import org.gradle.configuration.ScriptPluginFactory
+import org.gradle.internal.scripts.ScriptPluginFactory
 
 import org.gradle.groovy.scripts.ScriptSource
 

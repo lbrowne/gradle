@@ -22,6 +22,7 @@ import org.gradle.api.internal.initialization.ScriptHandlerInternal
 import org.gradle.groovy.scripts.ScriptSource
 import org.gradle.internal.resource.ResourceLocation
 import org.gradle.internal.resource.TextResource
+import org.gradle.internal.scripts.ScriptPluginFactory
 import spock.lang.Specification
 
 class DefaultInitScriptProcessorTest extends Specification {

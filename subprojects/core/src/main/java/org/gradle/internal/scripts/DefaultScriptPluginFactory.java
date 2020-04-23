@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 the original author or authors.
+ * Copyright 2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.gradle.configuration;
+package org.gradle.internal.scripts;
 
 import org.gradle.api.initialization.dsl.ScriptHandler;
 import org.gradle.api.internal.GradleInternal;
@@ -23,6 +23,14 @@ import org.gradle.api.internal.initialization.ClassLoaderScope;
 import org.gradle.api.internal.initialization.ScriptHandlerInternal;
 import org.gradle.api.internal.plugins.PluginManagerInternal;
 import org.gradle.api.internal.project.ProjectInternal;
+import org.gradle.configuration.CompileOperationFactory;
+import org.gradle.configuration.DefaultScriptTarget;
+import org.gradle.configuration.InitScriptTarget;
+import org.gradle.configuration.InitialPassSettingScriptTarget;
+import org.gradle.configuration.ProjectScriptTarget;
+import org.gradle.configuration.ScriptPlugin;
+import org.gradle.configuration.ScriptTarget;
+import org.gradle.configuration.SettingScriptTarget;
 import org.gradle.groovy.scripts.BasicScript;
 import org.gradle.groovy.scripts.ScriptCompiler;
 import org.gradle.groovy.scripts.ScriptCompilerFactory;

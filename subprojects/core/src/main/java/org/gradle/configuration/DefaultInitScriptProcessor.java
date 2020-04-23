@@ -22,6 +22,7 @@ import org.gradle.api.internal.initialization.ScriptHandlerFactory;
 import org.gradle.groovy.scripts.ScriptSource;
 import org.gradle.internal.id.IdGenerator;
 import org.gradle.internal.id.LongIdGenerator;
+import org.gradle.internal.scripts.ScriptPluginFactory;
 
 import java.net.URI;
 

@@ -17,7 +17,7 @@ package org.gradle.configuration.project;
 
 import org.gradle.api.internal.project.ProjectInternal;
 import org.gradle.configuration.ScriptPlugin;
-import org.gradle.configuration.ScriptPluginFactory;
+import org.gradle.internal.scripts.ScriptPluginFactory;
 import org.gradle.internal.time.Time;
 import org.gradle.internal.time.Timer;
 import org.slf4j.Logger;

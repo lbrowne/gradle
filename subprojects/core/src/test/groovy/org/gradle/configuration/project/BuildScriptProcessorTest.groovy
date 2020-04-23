@@ -21,7 +21,7 @@ import org.gradle.api.internal.initialization.ScriptHandlerInternal
 import org.gradle.api.internal.project.ProjectInternal
 import org.gradle.api.internal.project.ProjectState
 import org.gradle.configuration.ScriptPlugin
-import org.gradle.configuration.ScriptPluginFactory
+import org.gradle.internal.scripts.ScriptPluginFactory
 import org.gradle.groovy.scripts.ScriptSource
 import spock.lang.Specification
 

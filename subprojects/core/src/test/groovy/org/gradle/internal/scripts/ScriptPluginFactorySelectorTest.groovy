@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 the original author or authors.
+ * Copyright 2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gradle.configuration
+package org.gradle.internal.scripts
 
 import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
 import org.gradle.api.initialization.dsl.ScriptHandler
 import org.gradle.api.internal.initialization.ClassLoaderScope
+import org.gradle.configuration.ScriptPlugin
 import org.gradle.configuration.internal.DefaultUserCodeApplicationContext
 import org.gradle.groovy.scripts.ScriptSource
 import org.gradle.internal.operations.TestBuildOperationExecutor
