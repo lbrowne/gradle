@@ -29,9 +29,6 @@ import org.gradle.api.logging.configuration.ShowStacktrace;
 import org.gradle.api.logging.configuration.WarningMode;
 import org.gradle.concurrent.ParallelismConfiguration;
 import org.gradle.initialization.BuildLayoutParameters;
-import org.gradle.initialization.CompositeInitScriptFinder;
-import org.gradle.initialization.DistributionInitScriptFinder;
-import org.gradle.initialization.UserHomeInitScriptFinder;
 import org.gradle.internal.DefaultTaskExecutionRequest;
 import org.gradle.internal.FileUtils;
 import org.gradle.internal.concurrent.DefaultParallelismConfiguration;
@@ -555,13 +552,7 @@ public class StartParameter implements LoggingConfiguration, ParallelismConfigur
      * @return All init scripts, including explicit init scripts and implicit init scripts.
      */
     public List<File> getAllInitScripts() {
-        CompositeInitScriptFinder initScriptFinder = new CompositeInitScriptFinder(
-            new UserHomeInitScriptFinder(getGradleUserHomeDir()), new DistributionInitScriptFinder(gradleHomeDir)
-        );
-
-        List<File> scripts = new ArrayList<>(getInitScripts());
-        initScriptFinder.findScripts(scripts);
-        return Collections.unmodifiableList(scripts);
+        return getInitScripts();
     }
 
     /**

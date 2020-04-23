@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,27 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gradle.initialization;
+package org.gradle.internal.scripts;
 
 import java.io.File;
 import java.util.Collection;
 
-/**
- * An {@link InitScriptFinder} that includes every *.gradle file in $gradleHome/init.d.
- */
-public class DistributionInitScriptFinder extends DirectoryInitScriptFinder {
-    final File gradleHome;
+public class UserHomeInitScriptFinder extends DirectoryInitScriptFinder implements InitScriptFinder {
 
-    public DistributionInitScriptFinder(File gradleHome) {
-        this.gradleHome = gradleHome;
+    private final File userHomeDir;
+
+    public UserHomeInitScriptFinder(File userHomeDir) {
+        this.userHomeDir = userHomeDir;
     }
 
     @Override
     public void findScripts(Collection<File> scripts) {
-        if (gradleHome == null) {
-            return;
+        File userInitScript = resolveScriptFile(userHomeDir, "init");
+        if (userInitScript != null) {
+            scripts.add(userInitScript);
         }
-        findScriptsInDir(new File(gradleHome, "init.d"), scripts);
+        findScriptsInDir(new File(userHomeDir, "init.d"), scripts);
     }
-
 }
+

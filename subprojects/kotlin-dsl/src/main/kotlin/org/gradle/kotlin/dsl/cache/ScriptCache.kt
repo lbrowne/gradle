@@ -25,6 +25,7 @@ import org.gradle.caching.internal.controller.BuildCacheController
 
 import org.gradle.internal.id.UniqueId
 import org.gradle.internal.scopeids.id.BuildInvocationScopeId
+import org.gradle.internal.service.scopes.ServiceScope
 import org.gradle.internal.time.Time.startTimer
 import org.gradle.kotlin.dsl.provider.ScriptCacheRepository
 
@@ -33,6 +34,7 @@ import org.gradle.kotlin.dsl.support.serviceOf
 import java.io.File
 
 
+@ServiceScope(ServiceScope.Value.Build)
 internal
 class ScriptCache(
 

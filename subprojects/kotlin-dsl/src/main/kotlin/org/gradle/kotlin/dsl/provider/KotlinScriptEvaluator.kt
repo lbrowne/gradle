@@ -44,6 +44,7 @@ import org.gradle.internal.operations.CallableBuildOperation
 import org.gradle.internal.scripts.CompileScriptBuildOperationType.Details
 import org.gradle.internal.scripts.CompileScriptBuildOperationType.Result
 import org.gradle.internal.scripts.ScriptExecutionListener
+import org.gradle.internal.service.scopes.ServiceScope
 
 import org.gradle.kotlin.dsl.accessors.pluginSpecBuildersClassPath
 
@@ -67,6 +68,7 @@ import org.gradle.plugin.use.internal.PluginRequestApplicator
 import java.io.File
 
 
+@ServiceScope(ServiceScope.Value.Build)
 interface KotlinScriptEvaluator {
 
     fun evaluate(

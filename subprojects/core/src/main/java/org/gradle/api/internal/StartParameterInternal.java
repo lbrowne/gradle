@@ -17,10 +17,16 @@
 package org.gradle.api.internal;
 
 import org.gradle.StartParameter;
+import org.gradle.internal.scripts.CompositeInitScriptFinder;
+import org.gradle.internal.scripts.DistributionInitScriptFinder;
+import org.gradle.internal.scripts.UserHomeInitScriptFinder;
 import org.gradle.internal.deprecation.Deprecatable;
 import org.gradle.internal.deprecation.LoggingDeprecatable;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 public class StartParameterInternal extends StartParameter implements Deprecatable {
@@ -73,5 +79,16 @@ public class StartParameterInternal extends StartParameter implements Deprecatab
 
     public void setSearchUpwardsWithoutDeprecationWarning(boolean searchUpwards) {
         super.searchUpwards = searchUpwards;
+    }
+
+    @Override
+    public List<File> getAllInitScripts() {
+        CompositeInitScriptFinder initScriptFinder = new CompositeInitScriptFinder(
+            new UserHomeInitScriptFinder(getGradleUserHomeDir()), new DistributionInitScriptFinder(gradleHomeDir)
+        );
+
+        List<File> scripts = new ArrayList<>(getInitScripts());
+        initScriptFinder.findScripts(scripts);
+        return Collections.unmodifiableList(scripts);
     }
 }
