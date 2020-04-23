@@ -15,7 +15,6 @@
  */
 package org.gradle.internal.scripts
 
-import org.gradle.internal.scripts.DistributionInitScriptFinder
 import org.gradle.test.fixtures.file.TestNameTestDirectoryProvider
 import org.junit.Rule
 import spock.lang.Specification

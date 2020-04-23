@@ -15,8 +15,6 @@
  */
 package org.gradle.internal.scripts
 
-import org.gradle.internal.scripts.CompositeInitScriptFinder
-import org.gradle.internal.scripts.InitScriptFinder
 import spock.lang.Specification
 
 class CompositeInitScriptFinderTest extends Specification {
