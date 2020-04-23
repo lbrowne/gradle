@@ -161,6 +161,7 @@ class EdgeState implements DependencyGraphEdge {
 
     void cleanUpOnSourceChange(NodeState source) {
         removeFromTargetConfigurations();
+//        maybeDecreaseHardEdgeCount(source);
         selector.getTargetModule().removeUnattachedDependency(this);
         selector.release();
         maybeDecreaseHardEdgeCount(source);

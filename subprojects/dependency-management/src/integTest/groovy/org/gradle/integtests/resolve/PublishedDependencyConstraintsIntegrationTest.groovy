@@ -460,4 +460,111 @@ dependencies {
         }
     }
 
+    void "what the test"() {
+        repository {
+
+            'org:client:4.1.0'()
+            'org:client:4.1.1'()
+            'org:client:4.6.0'()
+
+            'org:platform:1.0' {
+                constraint 'org:client:4.1.0'
+            }
+
+            'org:cli:1.0' {
+                dependsOn 'org:client'
+                dependsOn 'org:deploy:1.0'
+            }
+
+            'org:cli:1.1' {
+                dependsOn 'org:deploy:1.0'
+            }
+
+            'org:extra:1.0' {
+                dependsOn 'org:other:1.0'
+            }
+
+            'org:other:1.0' {
+                dependsOn 'org:cli:1.1'
+            }
+
+            'org:deploy:1.0' {
+                dependsOn 'org:extra:1.0'
+                dependsOn 'org:backup:1.0'
+            }
+
+            'org:backup:1.0' {
+                dependsOn 'org:client:4.1.1'
+                dependsOn 'org:config:1.0'
+            }
+
+            'org:config:1.0' {
+                dependsOn 'org:kub:5.57'
+            }
+
+            'org:kub:5.57' {
+                dependsOn 'org:client:4.6.0'
+            }
+
+        }
+
+        buildFile << """
+
+                dependencies {
+                   conf "org:platform:1.0"
+                   conf "org:cli:1.0"
+                   conf "org:extra:1.0"
+                }
+
+            """
+
+        when:
+        repositoryInteractions {
+            'org:platform:1.0' {
+                expectResolve()
+            }
+            'org:cli:1.0' {
+                expectResolve()
+            }
+            'org:cli:1.1' {
+                expectResolve()
+            }
+            'org:deploy:1.0' {
+                expectResolve()
+            }
+            'org:backup:1.0' {
+                expectResolve()
+            }
+            'org:config:1.0' {
+                expectResolve()
+            }
+            'org:kub:5.57' {
+                expectResolve()
+            }
+            'org:client:4.1.0' {
+                expectGetMetadata()
+            }
+            'org:client:4.1.1' {
+                expectGetMetadata()
+            }
+            'org:client:4.6.0' {
+                expectResolve()
+            }
+            'org:extra:1.0' {
+                expectResolve()
+            }
+            'org:other:1.0' {
+                expectResolve()
+            }
+        }
+        run 'checkDeps'
+
+        then:
+        resolve.expectGraph {
+            root(':', ':test:') {
+
+            }
+        }
+    }
+
 }
