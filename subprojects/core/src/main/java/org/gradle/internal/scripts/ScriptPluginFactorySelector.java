@@ -22,74 +22,31 @@ import org.gradle.configuration.BuildOperationScriptPlugin;
 import org.gradle.configuration.ScriptPlugin;
 import org.gradle.configuration.internal.UserCodeApplicationContext;
 import org.gradle.groovy.scripts.ScriptSource;
-import org.gradle.internal.UncheckedException;
 import org.gradle.internal.operations.BuildOperationExecutor;
-import org.gradle.internal.reflect.Instantiator;
-import org.gradle.scripts.ScriptingLanguage;
 
 import java.util.List;
 
 /**
  * Selects a {@link ScriptPluginFactory} suitable for handling a given build script based
- * on its file name. Build script file names ending in ".gradle" are supported by the
- * {@link DefaultScriptPluginFactory}. Other files are delegated to the first available
- * matching implementation of the {@link ScriptingLanguage} SPI. If no provider
- * implementations matches for a given file name, handling falls back to the
- * {@link DefaultScriptPluginFactory}. This approach allows users to name build scripts
- * with a suffix of choice, e.g. "build.groovy" or "my.build" instead of the typical
- * "build.gradle" while preserving default behaviour which is to fallback to Groovy support.
+ * on its file name. Selects a backing {@link DslLanguageScriptPluginFactory} based on the
+ * extension of the file, using the first fallback if there is no match.
+ * This approach allows users to name build scripts with a suffix of choice, e.g. "build.groovy"
+ * or "my.build" instead of the typical "build.gradle" while preserving default behaviour which
+ * is to fallback to Groovy support.
  *
  * This factory wraps each {@link ScriptPlugin} implementation in a {@link BuildOperationScriptPlugin}.
  *
  * @since 2.14
  */
 public class ScriptPluginFactorySelector implements ScriptPluginFactory {
-
-    /**
-     * Scripting language ScriptPluginFactory instantiator.
-     *
-     * @since 4.0
-     */
-    public interface ProviderInstantiator {
-        ScriptPluginFactory instantiate(String providerClassName);
-    }
-
-    /**
-     * Default scripting language ScriptPluginFactory instantiator.
-     *
-     * @param instantiator the instantiator
-     * @return the provider instantiator
-     * @since 4.0
-     */
-    public static ProviderInstantiator defaultProviderInstantiatorFor(final Instantiator instantiator) {
-        return new ProviderInstantiator() {
-
-            @Override
-            public ScriptPluginFactory instantiate(String providerClassName) {
-                Class<?> providerClass = loadProviderClass(providerClassName);
-                return (ScriptPluginFactory) instantiator.newInstance(providerClass);
-            }
-
-            private Class<?> loadProviderClass(String providerClassName) {
-                try {
-                    return getClass().getClassLoader().loadClass(providerClassName);
-                } catch (ClassNotFoundException e) {
-                    throw UncheckedException.throwAsUncheckedException(e);
-                }
-            }
-        };
-    }
-
-    private final ScriptPluginFactory defaultScriptPluginFactory;
-    private final ProviderInstantiator providerInstantiator;
+    private final List<DslLanguageScriptPluginFactory> scriptPluginFactories;
     private final BuildOperationExecutor buildOperationExecutor;
     private final UserCodeApplicationContext userCodeApplicationContext;
 
-    public ScriptPluginFactorySelector(ScriptPluginFactory defaultScriptPluginFactory,
-                                       ProviderInstantiator providerInstantiator,
-                                       BuildOperationExecutor buildOperationExecutor, UserCodeApplicationContext userCodeApplicationContext) {
-        this.defaultScriptPluginFactory = defaultScriptPluginFactory;
-        this.providerInstantiator = providerInstantiator;
+    public ScriptPluginFactorySelector(List<DslLanguageScriptPluginFactory> scriptPluginFactories,
+                                       BuildOperationExecutor buildOperationExecutor,
+                                       UserCodeApplicationContext userCodeApplicationContext) {
+        this.scriptPluginFactories = scriptPluginFactories;
         this.buildOperationExecutor = buildOperationExecutor;
         this.userCodeApplicationContext = userCodeApplicationContext;
     }
@@ -102,24 +59,21 @@ public class ScriptPluginFactorySelector implements ScriptPluginFactory {
         return new BuildOperationScriptPlugin(scriptPlugin, buildOperationExecutor, userCodeApplicationContext);
     }
 
-    private ScriptPluginFactory scriptPluginFactoryFor(String fileName) {
-        for (ScriptingLanguage scriptingLanguage : scriptingLanguages()) {
-            if (fileName.endsWith(scriptingLanguage.getExtension())) {
-                String provider = scriptingLanguage.getProvider();
-                if (provider != null) {
-                    return instantiate(provider);
-                }
-                return defaultScriptPluginFactory;
+    private DslLanguageScriptPluginFactory scriptPluginFactoryFor(String fileName) {
+        for (DslLanguageScriptPluginFactory scriptPluginFactory : scriptPluginFactories) {
+            if (fileName.endsWith(scriptPluginFactory.getExtension())) {
+                return scriptPluginFactory;
             }
         }
-        return defaultScriptPluginFactory;
+        return getFallbackFactory();
     }
 
-    private List<ScriptingLanguage> scriptingLanguages() {
-        return ScriptingLanguages.all();
-    }
-
-    private ScriptPluginFactory instantiate(String provider) {
-        return providerInstantiator.instantiate(provider);
+    private DslLanguageScriptPluginFactory getFallbackFactory() {
+        for (DslLanguageScriptPluginFactory scriptPluginFactory : scriptPluginFactories) {
+            if (scriptPluginFactory.isFallback()) {
+                return scriptPluginFactory;
+            }
+        }
+        throw new IllegalArgumentException("No fallback script factory in: " + scriptPluginFactories);
     }
 }

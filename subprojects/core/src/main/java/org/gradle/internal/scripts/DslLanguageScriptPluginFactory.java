@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.gradle.internal.scripts;
 
 import org.gradle.api.initialization.dsl.ScriptHandler;
@@ -21,7 +22,14 @@ import org.gradle.configuration.ScriptPlugin;
 import org.gradle.groovy.scripts.ScriptSource;
 import org.gradle.internal.service.scopes.ServiceScope;
 
+/**
+ * Encapsulates the DSL language specific behaviour of applying a build script to some target object.
+ */
 @ServiceScope(ServiceScope.Value.Build)
-public interface ScriptPluginFactory {
+public interface DslLanguageScriptPluginFactory {
+    String getExtension();
+
+    boolean isFallback();
+
     ScriptPlugin create(ScriptSource scriptSource, ScriptHandler scriptHandler, ClassLoaderScope targetScope, ClassLoaderScope baseScope, boolean topLevelScript);
 }

@@ -87,11 +87,8 @@ import org.gradle.configuration.BuildOperatingFiringProjectsPreparer;
 import org.gradle.configuration.CompileOperationFactory;
 import org.gradle.configuration.DefaultInitScriptProcessor;
 import org.gradle.configuration.DefaultProjectsPreparer;
-import org.gradle.internal.scripts.DefaultScriptPluginFactory;
 import org.gradle.configuration.ImportsReader;
 import org.gradle.configuration.ProjectsPreparer;
-import org.gradle.internal.scripts.ScriptPluginFactory;
-import org.gradle.internal.scripts.ScriptPluginFactorySelector;
 import org.gradle.configuration.internal.UserCodeApplicationContext;
 import org.gradle.configuration.project.BuildScriptProcessor;
 import org.gradle.configuration.project.ConfigureActionsProjectEvaluator;
@@ -176,7 +173,13 @@ import org.gradle.internal.operations.logging.DefaultBuildOperationLoggerFactory
 import org.gradle.internal.reflect.Instantiator;
 import org.gradle.internal.resource.DefaultTextFileResourceLoader;
 import org.gradle.internal.resource.TextFileResourceLoader;
+import org.gradle.internal.scripts.DefaultScriptFileResolver;
+import org.gradle.internal.scripts.DefaultScriptPluginFactory;
+import org.gradle.internal.scripts.DslLanguageScriptPluginFactory;
 import org.gradle.internal.scripts.ScriptExecutionListener;
+import org.gradle.internal.scripts.ScriptFileResolver;
+import org.gradle.internal.scripts.ScriptPluginFactory;
+import org.gradle.internal.scripts.ScriptPluginFactorySelector;
 import org.gradle.internal.service.CachingServiceLocator;
 import org.gradle.internal.service.DefaultServiceRegistry;
 import org.gradle.internal.service.ServiceRegistry;
@@ -366,15 +369,15 @@ public class BuildScopeServices extends DefaultServiceRegistry {
             classpathTransformer);
     }
 
-    protected ScriptPluginFactory createScriptPluginFactory(InstantiatorFactory instantiatorFactory, BuildOperationExecutor buildOperationExecutor, UserCodeApplicationContext userCodeApplicationContext) {
-        DefaultScriptPluginFactory defaultScriptPluginFactory = defaultScriptPluginFactory();
-        ScriptPluginFactorySelector.ProviderInstantiator instantiator = ScriptPluginFactorySelector.defaultProviderInstantiatorFor(instantiatorFactory.inject(this));
-        ScriptPluginFactorySelector scriptPluginFactorySelector = new ScriptPluginFactorySelector(defaultScriptPluginFactory, instantiator, buildOperationExecutor, userCodeApplicationContext);
-        defaultScriptPluginFactory.setScriptPluginFactory(scriptPluginFactorySelector);
-        return scriptPluginFactorySelector;
+    protected ScriptFileResolver createScriptFileResolver() {
+        return new DefaultScriptFileResolver();
     }
 
-    private DefaultScriptPluginFactory defaultScriptPluginFactory() {
+    protected ScriptPluginFactory createScriptPluginFactory(List<DslLanguageScriptPluginFactory> scriptPluginFactories, BuildOperationExecutor buildOperationExecutor, UserCodeApplicationContext userCodeApplicationContext) {
+        return new ScriptPluginFactorySelector(scriptPluginFactories, buildOperationExecutor, userCodeApplicationContext);
+    }
+
+    protected DslLanguageScriptPluginFactory createScriptPluginFactory() {
         return new DefaultScriptPluginFactory(
             this,
             get(ScriptCompilerFactory.class),

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 the original author or authors.
+ * Copyright 2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,23 +15,25 @@
  */
 package org.gradle.internal.scripts;
 
-import org.gradle.scripts.ScriptingLanguage;
+import com.google.common.collect.ImmutableList;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
-
 import static org.gradle.internal.FileUtils.hasExtension;
 
 public class DefaultScriptFileResolver implements ScriptFileResolver {
+    private final List<String> extensions;
 
-    private static final String[] EXTENSIONS = scriptingLanguageExtensions();
+    public DefaultScriptFileResolver() {
+        extensions = ImmutableList.of(".gradle", ".gradle.kts");
+    }
 
     @Override
     public File resolveScriptFile(File dir, String basename) {
-        for (String extension : EXTENSIONS) {
+        for (String extension : extensions) {
             File candidate = new File(dir, basename + extension);
             if (candidate.isFile()) {
                 return candidate;
@@ -56,7 +58,7 @@ public class DefaultScriptFileResolver implements ScriptFileResolver {
     }
 
     private boolean hasScriptExtension(File file) {
-        for (String extension : EXTENSIONS) {
+        for (String extension : extensions) {
             if (hasExtension(file, extension)) {
                 return true;
             }
@@ -64,12 +66,22 @@ public class DefaultScriptFileResolver implements ScriptFileResolver {
         return false;
     }
 
-    private static String[] scriptingLanguageExtensions() {
-        List<ScriptingLanguage> scriptingLanguages = ScriptingLanguages.all();
-        String[] extensions = new String[scriptingLanguages.size()];
-        for (int i = 0; i < extensions.length; i++) {
-            extensions[i] = scriptingLanguages.get(i).getExtension();
+    private static List<String> scriptingLanguageExtensions(List<DslLanguageScriptPluginFactory> scriptPluginFactories) {
+        // Ensure a fixed order, with the fallback ordered first
+        List<DslLanguageScriptPluginFactory> orderedFactories = new ArrayList<>(scriptPluginFactories);
+        orderedFactories.sort((a, b) -> {
+            if (a.isFallback()) {
+                return -1;
+            }
+            if (b.isFallback()) {
+                return 1;
+            }
+            return a.getExtension().compareTo(b.getExtension());
+        });
+        ImmutableList.Builder<String> extensions = ImmutableList.builderWithExpectedSize(orderedFactories.size());
+        for (DslLanguageScriptPluginFactory scriptPluginFactory : orderedFactories) {
+            extensions.add(scriptPluginFactory.getExtension());
         }
-        return extensions;
+        return extensions.build();
     }
 }

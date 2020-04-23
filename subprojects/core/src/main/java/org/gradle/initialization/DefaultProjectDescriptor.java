@@ -23,7 +23,6 @@ import org.gradle.api.internal.DocumentationRegistry;
 import org.gradle.api.internal.project.ProjectIdentifier;
 import org.gradle.internal.FileUtils;
 import org.gradle.internal.file.PathToFileResolver;
-import org.gradle.internal.scripts.DefaultScriptFileResolver;
 import org.gradle.internal.scripts.ScriptFileResolver;
 import org.gradle.util.NameValidator;
 import org.gradle.util.Path;
@@ -44,16 +43,11 @@ public class DefaultProjectDescriptor implements ProjectDescriptor, ProjectIdent
     private final ScriptFileResolver scriptFileResolver;
     private File dir;
     private File canonicalDir;
-    private DefaultProjectDescriptor parent;
-    private Set<ProjectDescriptor> children = new LinkedHashSet<ProjectDescriptor>();
+    private final DefaultProjectDescriptor parent;
+    private final Set<ProjectDescriptor> children = new LinkedHashSet<ProjectDescriptor>();
     private ProjectDescriptorRegistry projectDescriptorRegistry;
     private Path path;
     private String buildFileName;
-
-    public DefaultProjectDescriptor(@Nullable DefaultProjectDescriptor parent, String name, File dir,
-                                    ProjectDescriptorRegistry projectDescriptorRegistry, PathToFileResolver fileResolver) {
-        this(parent, name, dir, projectDescriptorRegistry, fileResolver, null);
-    }
 
     public DefaultProjectDescriptor(@Nullable DefaultProjectDescriptor parent, String name, File dir,
                                     ProjectDescriptorRegistry projectDescriptorRegistry, PathToFileResolver fileResolver,
@@ -64,9 +58,7 @@ public class DefaultProjectDescriptor implements ProjectDescriptor, ProjectIdent
         this.dir = dir;
         this.projectDescriptorRegistry = projectDescriptorRegistry;
         this.path = path(name);
-        this.scriptFileResolver = scriptFileResolver != null
-            ? scriptFileResolver
-            : new DefaultScriptFileResolver();
+        this.scriptFileResolver = scriptFileResolver;
 
         projectDescriptorRegistry.addProject(this);
         if (parent != null) {

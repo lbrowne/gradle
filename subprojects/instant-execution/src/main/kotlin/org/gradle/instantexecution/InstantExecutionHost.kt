@@ -52,6 +52,7 @@ import org.gradle.internal.operations.BuildOperationDescriptor
 import org.gradle.internal.operations.BuildOperationExecutor
 import org.gradle.internal.operations.RunnableBuildOperation
 import org.gradle.internal.reflect.Instantiator
+import org.gradle.internal.scripts.ScriptFileResolver
 import org.gradle.internal.service.scopes.BuildScopeServiceRegistryFactory
 import org.gradle.plugin.management.internal.autoapply.AutoAppliedPluginRegistry
 import org.gradle.plugin.use.internal.PluginRequestApplicator
@@ -70,7 +71,7 @@ class InstantExecutionHost internal constructor(
         DefaultVintageGradleBuild()
 
     override fun createBuild(rootProjectName: String): InstantExecutionBuild =
-        DefaultInstantExecutionBuild(gradle, service(), rootProjectName)
+        DefaultInstantExecutionBuild(gradle, service(), service(), rootProjectName)
 
     override fun <T> service(serviceType: Class<T>): T =
         gradle.services.get(serviceType)
@@ -95,6 +96,7 @@ class InstantExecutionHost internal constructor(
     inner class DefaultInstantExecutionBuild(
         override val gradle: GradleInternal,
         private val fileResolver: PathToFileResolver,
+        private val scriptFileResolver: ScriptFileResolver,
         private val rootProjectName: String
     ) : InstantExecutionBuild {
 
@@ -125,7 +127,8 @@ class InstantExecutionHost internal constructor(
                 name ?: rootProjectName,
                 dir,
                 projectDescriptorRegistry,
-                fileResolver
+                fileResolver,
+                scriptFileResolver
             )
             projectDescriptorRegistry.addProject(projectDescriptor)
         }

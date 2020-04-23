@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 the original author or authors.
+ * Copyright 2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,17 +15,18 @@
  */
 package org.gradle.internal.scripts;
 
-import org.gradle.scripts.ScriptingLanguage;
+import org.gradle.internal.service.scopes.ServiceScope;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.List;
-import javax.annotation.Nullable;
 
 /**
- * Resolves script files according to available {@link ScriptingLanguage} providers.
+ * Resolves script files according to available DSL languages.
  *
  * @since 4.0
  */
+@ServiceScope(ServiceScope.Value.Build)
 public interface ScriptFileResolver {
 
     /**
@@ -39,14 +40,11 @@ public interface ScriptFileResolver {
     File resolveScriptFile(File dir, String basename);
 
     /**
-     * Searches for script files in the given directory, that is, any file with a known
-     * {@link ScriptingLanguage#getExtension() extension}.
+     * Searches for script files in the given directory, that is, any file with a known DSL extension.
      *
      * @param dir the directory in which to search
-     *
      * @return list containing all script files found in the given directory in no particular order
-     *
      * @since 4.6
      */
-     List<File> findScriptsIn(File dir);
+    List<File> findScriptsIn(File dir);
 }

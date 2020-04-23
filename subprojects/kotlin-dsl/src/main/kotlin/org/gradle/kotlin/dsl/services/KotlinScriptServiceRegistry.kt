@@ -18,12 +18,14 @@ package org.gradle.kotlin.dsl.services
 
 import org.gradle.internal.service.ServiceRegistration
 import org.gradle.internal.service.scopes.AbstractPluginServiceRegistry
+import org.gradle.kotlin.dsl.provider.KotlinScriptPluginFactory
 
 
 internal
 class KotlinScriptServiceRegistry : AbstractPluginServiceRegistry() {
 
     override fun registerBuildServices(registration: ServiceRegistration) {
+        registration.add(KotlinScriptPluginFactory::class.java)
         registration.addProvider(org.gradle.kotlin.dsl.cache.BuildServices)
         registration.addProvider(org.gradle.kotlin.dsl.concurrent.BuildServices)
         registration.addProvider(org.gradle.kotlin.dsl.provider.BuildServices)

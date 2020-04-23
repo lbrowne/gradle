@@ -15,6 +15,7 @@
  */
 package org.gradle.internal.scripts;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.Collection;
 
@@ -24,7 +25,8 @@ import java.util.Collection;
 public class DistributionInitScriptFinder extends DirectoryInitScriptFinder {
     final File gradleHome;
 
-    public DistributionInitScriptFinder(File gradleHome) {
+    public DistributionInitScriptFinder(@Nullable File gradleHome, ScriptFileResolver scriptFileResolver) {
+        super(scriptFileResolver);
         this.gradleHome = gradleHome;
     }
 

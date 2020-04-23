@@ -17,11 +17,12 @@
 package org.gradle.api.internal;
 
 import org.gradle.StartParameter;
-import org.gradle.internal.scripts.CompositeInitScriptFinder;
-import org.gradle.internal.scripts.DistributionInitScriptFinder;
-import org.gradle.internal.scripts.UserHomeInitScriptFinder;
 import org.gradle.internal.deprecation.Deprecatable;
 import org.gradle.internal.deprecation.LoggingDeprecatable;
+import org.gradle.internal.scripts.CompositeInitScriptFinder;
+import org.gradle.internal.scripts.DefaultScriptFileResolver;
+import org.gradle.internal.scripts.DistributionInitScriptFinder;
+import org.gradle.internal.scripts.UserHomeInitScriptFinder;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -83,8 +84,10 @@ public class StartParameterInternal extends StartParameter implements Deprecatab
 
     @Override
     public List<File> getAllInitScripts() {
+        DefaultScriptFileResolver scriptFileResolver = new DefaultScriptFileResolver();
         CompositeInitScriptFinder initScriptFinder = new CompositeInitScriptFinder(
-            new UserHomeInitScriptFinder(getGradleUserHomeDir()), new DistributionInitScriptFinder(gradleHomeDir)
+            new UserHomeInitScriptFinder(getGradleUserHomeDir(), scriptFileResolver),
+            new DistributionInitScriptFinder(gradleHomeDir, scriptFileResolver)
         );
 
         List<File> scripts = new ArrayList<>(getInitScripts());

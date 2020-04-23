@@ -15,12 +15,18 @@
  */
 package org.gradle.internal.scripts;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public abstract class DirectoryInitScriptFinder implements InitScriptFinder {
+    private final ScriptFileResolver scriptFileResolver;
+
+    public DirectoryInitScriptFinder(ScriptFileResolver scriptFileResolver) {
+        this.scriptFileResolver = scriptFileResolver;
+    }
 
     protected void findScriptsInDir(File initScriptsDir, Collection<File> scripts) {
         if (!initScriptsDir.isDirectory()) {
@@ -31,15 +37,12 @@ public abstract class DirectoryInitScriptFinder implements InitScriptFinder {
         scripts.addAll(found);
     }
 
+    @Nullable
     protected File resolveScriptFile(File dir, String basename) {
-        return resolver().resolveScriptFile(dir, basename);
+        return scriptFileResolver.resolveScriptFile(dir, basename);
     }
 
     private List<File> initScriptsIn(File initScriptsDir) {
-        return resolver().findScriptsIn(initScriptsDir);
-    }
-
-    private DefaultScriptFileResolver resolver() {
-        return new DefaultScriptFileResolver();
+        return scriptFileResolver.findScriptsIn(initScriptsDir);
     }
 }

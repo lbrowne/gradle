@@ -54,6 +54,7 @@ import org.gradle.internal.logging.services.LoggingServiceRegistry;
 import org.gradle.internal.nativeintegration.services.NativeServices;
 import org.gradle.internal.resources.DefaultResourceLockCoordinationService;
 import org.gradle.internal.resources.ResourceLockCoordinationService;
+import org.gradle.internal.scripts.ScriptFileResolver;
 import org.gradle.internal.service.ServiceRegistry;
 import org.gradle.internal.service.ServiceRegistryBuilder;
 import org.gradle.internal.service.scopes.BuildSessionScopeServices;
@@ -78,7 +79,9 @@ public class ProjectBuilderImpl {
         DefaultProjectDescriptor parentDescriptor = descriptorRegistry.getProject(parentProject.getPath());
 
         projectDir = (projectDir != null) ? projectDir.getAbsoluteFile() : new File(parentProject.getProjectDir(), name);
-        DefaultProjectDescriptor projectDescriptor = new DefaultProjectDescriptor(parentDescriptor, name, projectDir, descriptorRegistry, parentProject.getServices().get(FileResolver.class));
+        FileResolver fileResolver = parentProject.getServices().get(FileResolver.class);
+        ScriptFileResolver scriptFileResolver = parentProject.getServices().get(ScriptFileResolver.class);
+        DefaultProjectDescriptor projectDescriptor = new DefaultProjectDescriptor(parentDescriptor, name, projectDir, descriptorRegistry, fileResolver, scriptFileResolver);
         descriptorRegistry.addProject(projectDescriptor);
 
         parentProject.getServices().get(ProjectStateRegistry.class).registerProject(parentProject.getServices().get(BuildState.class), projectDescriptor);
@@ -117,7 +120,7 @@ public class ProjectBuilderImpl {
         gradle.setIncludedBuilds(Collections.<IncludedBuild>emptyList());
 
         ProjectDescriptorRegistry projectDescriptorRegistry = buildServices.get(ProjectDescriptorRegistry.class);
-        DefaultProjectDescriptor projectDescriptor = new DefaultProjectDescriptor(null, name, projectDir, projectDescriptorRegistry, buildServices.get(FileResolver.class));
+        DefaultProjectDescriptor projectDescriptor = new DefaultProjectDescriptor(null, name, projectDir, projectDescriptorRegistry, buildServices.get(FileResolver.class), buildServices.get(ScriptFileResolver.class));
         projectDescriptorRegistry.addProject(projectDescriptor);
 
         ClassLoaderScope baseScope = gradle.getClassLoaderScope();

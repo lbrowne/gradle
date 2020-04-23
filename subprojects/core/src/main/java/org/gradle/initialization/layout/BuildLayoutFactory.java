@@ -21,10 +21,12 @@ import org.gradle.api.resources.MissingResourceException;
 import org.gradle.internal.FileUtils;
 import org.gradle.internal.scan.UsedByScanPlugin;
 import org.gradle.internal.scripts.DefaultScriptFileResolver;
+import org.gradle.internal.service.scopes.ServiceScope;
 
 import java.io.File;
 
 @UsedByScanPlugin
+@ServiceScope(ServiceScope.Value.Global)
 public class BuildLayoutFactory {
 
     private static final String DEFAULT_SETTINGS_FILE_BASENAME = "settings";

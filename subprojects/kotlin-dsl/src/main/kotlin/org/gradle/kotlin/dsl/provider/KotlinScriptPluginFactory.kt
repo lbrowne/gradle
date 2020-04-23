@@ -18,24 +18,22 @@ package org.gradle.kotlin.dsl.provider
 
 import org.gradle.api.initialization.dsl.ScriptHandler
 import org.gradle.api.internal.initialization.ClassLoaderScope
-
 import org.gradle.configuration.ScriptPlugin
-import org.gradle.internal.scripts.ScriptPluginFactory
-
 import org.gradle.groovy.scripts.ScriptSource
-
+import org.gradle.internal.scripts.DslLanguageScriptPluginFactory
+import org.gradle.internal.service.scopes.ServiceScope
 import org.gradle.kotlin.dsl.execution.EvalOption
 import org.gradle.kotlin.dsl.execution.defaultEvalOptions
-
-import java.util.*
-
+import java.util.EnumSet
 import javax.inject.Inject
 
 
-@Suppress("unused") // The name of this class is hardcoded in Gradle
+@ServiceScope(ServiceScope.Value.Build)
 class KotlinScriptPluginFactory @Inject internal constructor(
     private val kotlinScriptEvaluator: KotlinScriptEvaluator
-) : ScriptPluginFactory {
+) : DslLanguageScriptPluginFactory {
+    override fun getExtension() = ".gradle.kts"
+    override fun isFallback() = false
 
     override fun create(
         scriptSource: ScriptSource,

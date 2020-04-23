@@ -34,11 +34,12 @@ import org.gradle.api.internal.plugins.PluginManagerInternal;
 import org.gradle.api.internal.project.AbstractPluginAware;
 import org.gradle.api.internal.project.ProjectRegistry;
 import org.gradle.caching.configuration.BuildCacheConfiguration;
-import org.gradle.internal.scripts.ScriptPluginFactory;
 import org.gradle.groovy.scripts.ScriptSource;
 import org.gradle.internal.Actions;
 import org.gradle.internal.deprecation.DeprecationLogger;
 import org.gradle.internal.resource.TextUriResourceLoader;
+import org.gradle.internal.scripts.ScriptFileResolver;
+import org.gradle.internal.scripts.ScriptPluginFactory;
 import org.gradle.internal.service.ServiceRegistry;
 import org.gradle.internal.service.scopes.ServiceRegistryFactory;
 import org.gradle.plugin.management.PluginManagementSpec;
@@ -109,7 +110,7 @@ public abstract class DefaultSettings extends AbstractPluginAware implements Set
     }
 
     public DefaultProjectDescriptor createProjectDescriptor(DefaultProjectDescriptor parent, String name, File dir) {
-        return new DefaultProjectDescriptor(parent, name, dir, getProjectDescriptorRegistry(), getFileResolver());
+        return new DefaultProjectDescriptor(parent, name, dir, getProjectDescriptorRegistry(), getFileResolver(), getScriptFileResolver());
     }
 
     @Override
@@ -225,14 +226,13 @@ public abstract class DefaultSettings extends AbstractPluginAware implements Set
     }
 
     @Inject
-    public ProjectDescriptorRegistry getProjectDescriptorRegistry() {
-        throw new UnsupportedOperationException();
-    }
+    protected abstract ScriptFileResolver getScriptFileResolver();
 
     @Inject
-    public TextUriResourceLoader.Factory getTextUriResourceLoaderFactory() {
-        throw new UnsupportedOperationException();
-    }
+    public abstract ProjectDescriptorRegistry getProjectDescriptorRegistry();
+
+    @Inject
+    protected abstract TextUriResourceLoader.Factory getTextUriResourceLoaderFactory();
 
     @Override
     public ProjectRegistry<DefaultProjectDescriptor> getProjectRegistry() {
@@ -249,7 +249,6 @@ public abstract class DefaultSettings extends AbstractPluginAware implements Set
             getTextUriResourceLoaderFactory(),
             this);
     }
-
 
     @Override
     public ClassLoaderScope getBaseClassLoaderScope() {
@@ -271,25 +270,17 @@ public abstract class DefaultSettings extends AbstractPluginAware implements Set
     }
 
     @Inject
-    protected ScriptHandlerFactory getScriptHandlerFactory() {
-        throw new UnsupportedOperationException();
-    }
+    abstract protected ScriptHandlerFactory getScriptHandlerFactory();
 
     @Inject
-    protected ScriptPluginFactory getScriptPluginFactory() {
-        throw new UnsupportedOperationException();
-    }
+    abstract protected ScriptPluginFactory getScriptPluginFactory();
 
     @Inject
-    protected FileResolver getFileResolver() {
-        throw new UnsupportedOperationException();
-    }
+    abstract protected FileResolver getFileResolver();
 
     @Override
     @Inject
-    public PluginManagerInternal getPluginManager() {
-        throw new UnsupportedOperationException();
-    }
+    abstract public PluginManagerInternal getPluginManager();
 
     @Override
     public void includeBuild(Object rootProject) {
@@ -309,9 +300,7 @@ public abstract class DefaultSettings extends AbstractPluginAware implements Set
 
     @Override
     @Inject
-    public BuildCacheConfiguration getBuildCache() {
-        throw new UnsupportedOperationException();
-    }
+    abstract public BuildCacheConfiguration getBuildCache();
 
     @Override
     public void pluginManagement(Action<? super PluginManagementSpec> rule) {
@@ -320,9 +309,7 @@ public abstract class DefaultSettings extends AbstractPluginAware implements Set
 
     @Override
     @Inject
-    public PluginManagementSpec getPluginManagement() {
-        throw new UnsupportedOperationException();
-    }
+    abstract public PluginManagementSpec getPluginManagement();
 
     @Override
     public void sourceControl(Action<? super SourceControl> configuration) {
@@ -331,9 +318,7 @@ public abstract class DefaultSettings extends AbstractPluginAware implements Set
 
     @Override
     @Inject
-    public SourceControl getSourceControl() {
-        throw new UnsupportedOperationException();
-    }
+    abstract public SourceControl getSourceControl();
 
     @Override
     public void enableFeaturePreview(String name) {

@@ -49,7 +49,7 @@ import org.gradle.plugin.management.internal.autoapply.AutoAppliedPluginHandler;
 import org.gradle.plugin.use.internal.PluginRequestApplicator;
 import org.gradle.plugin.use.internal.PluginsAwareScript;
 
-public class DefaultScriptPluginFactory implements ScriptPluginFactory {
+public class DefaultScriptPluginFactory implements DslLanguageScriptPluginFactory {
 
     private final ServiceRegistry scriptServices;
     private final ScriptCompilerFactory scriptCompilerFactory;
@@ -57,7 +57,6 @@ public class DefaultScriptPluginFactory implements ScriptPluginFactory {
     private final AutoAppliedPluginHandler autoAppliedPluginHandler;
     private final PluginRequestApplicator pluginRequestApplicator;
     private final CompileOperationFactory compileOperationFactory;
-    private ScriptPluginFactory scriptPluginFactory;
 
     public DefaultScriptPluginFactory(ServiceRegistry scriptServices, ScriptCompilerFactory scriptCompilerFactory, Factory<LoggingManagerInternal> loggingFactoryManager,
                                       AutoAppliedPluginHandler autoAppliedPluginHandler, PluginRequestApplicator pluginRequestApplicator,
@@ -68,11 +67,16 @@ public class DefaultScriptPluginFactory implements ScriptPluginFactory {
         this.autoAppliedPluginHandler = autoAppliedPluginHandler;
         this.pluginRequestApplicator = pluginRequestApplicator;
         this.compileOperationFactory = compileOperationFactory;
-        this.scriptPluginFactory = this;
     }
 
-    public void setScriptPluginFactory(ScriptPluginFactory scriptPluginFactory) {
-        this.scriptPluginFactory = scriptPluginFactory;
+    @Override
+    public String getExtension() {
+        return ".gradle";
+    }
+
+    @Override
+    public boolean isFallback() {
+        return true;
     }
 
     @Override
@@ -103,7 +107,6 @@ public class DefaultScriptPluginFactory implements ScriptPluginFactory {
         @Override
         public void apply(final Object target) {
             DefaultServiceRegistry services = new DefaultServiceRegistry(scriptServices);
-            services.add(ScriptPluginFactory.class, scriptPluginFactory);
             services.add(ClassLoaderScope.class, baseScope);
             services.add(LoggingManagerInternal.class, loggingFactoryManager.create());
             services.add(ScriptHandler.class, scriptHandler);

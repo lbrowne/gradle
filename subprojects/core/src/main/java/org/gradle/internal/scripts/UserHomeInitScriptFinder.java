@@ -22,7 +22,8 @@ public class UserHomeInitScriptFinder extends DirectoryInitScriptFinder implemen
 
     private final File userHomeDir;
 
-    public UserHomeInitScriptFinder(File userHomeDir) {
+    public UserHomeInitScriptFinder(File userHomeDir, ScriptFileResolver scriptFileResolver) {
+        super(scriptFileResolver);
         this.userHomeDir = userHomeDir;
     }
 
